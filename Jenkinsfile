@@ -1,5 +1,5 @@
 pipeline {
-    agent any
+    agent { label 'build-agent' }
 
     stages {
         stage('Pull Source Code') {
@@ -16,8 +16,10 @@ pipeline {
 
         stage('Run Test Container') {
             steps {
-                sh 'docker rm -f food-app || true'
-                sh 'docker run -d --name food-app -p 8081:80 food-delivery-app:latest'
+                sh '''
+                docker rm -f food-delivery-app || true
+                docker run -d --name food-delivery-app -p 8081:80 food-delivery-app:latest
+                '''
             }
         }
     }
